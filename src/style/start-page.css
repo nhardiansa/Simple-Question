@@ -1,0 +1,13 @@
+#start-page h1 {
+  font-size: 2.75rem;
+}
+
+@media (min-width: 768px) {
+  #start-page h1 {
+    font-size: 3rem;
+  }
+
+  #start-page select {
+    width: 120%;
+  }
+}

@@ -20,7 +20,6 @@ class StartPage extends HTMLElement {
   async connectedCallback() {
     const result = await axios.get('https://opentdb.com/api_category.php');
     this._categories = result.data.trivia_categories;
-    console.log(this._categories);
     this.render();
   }
 

@@ -1,11 +1,34 @@
 /* eslint-disable require-jsdoc */
+import store from '../store';
+import './option-item';
+
 class QuestionPage extends HTMLElement {
   connectedCallback() {
-    this._questionIndex = 1;
+    this._questions = store.getState();
+    this._questionIndex = 0;
+    this._answers = [];
+    this.render();
+  }
+
+  set questionIndex(val) {
+    this._questionIndex = val;
+    this.render();
+  }
+
+  onNextClick() {
+    this._questionIndex++;
+    this.render();
+  }
+
+  onPrevClick() {
+    this._questionIndex--;
     this.render();
   }
 
   render() {
+    const questions = this._questions.data.questions;
+    const index = this._questionIndex;
+    const answers = questions[index].answers;
     this.innerHTML = `
       <h1 id="timer" class="text-center text-white">30</h1>
       <div class="question d-flex align-items-center">
@@ -24,37 +47,36 @@ class QuestionPage extends HTMLElement {
           <i class="bi bi-chevron-right"></i>
         </button>
         <div class="card px-3 order-2" style="width: 18rem">
-          <div class="card-body d-flex flex-column">
+          <div id="card-body" class="card-body d-flex flex-column">
             <p class="card-text">
-              Some quick example text to build on the card title and make up
-              the bulk of the card's content.
+              ${questions[index].question}
             </p>
-            <div class="option">
-              <input
-                type="checkbox"
-                class="btn-check"
-                id="1"
-                autocomplete="off"
-              />
-              <label class="btn btn-outline-secondary w-100" for="1"
-                >Checked</label
-              >
-            </div>
-            <div class="option">
-              <input
-                type="checkbox"
-                class="btn-check"
-                id="1"
-                autocomplete="off"
-              />
-              <label class="btn btn-outline-secondary w-100" for="1"
-                >Checked</label
-              >
-            </div>
           </div>
         </div>
       </div>
     `;
+    const nextBtn = this.querySelector('#next');
+    const prevBtn = this.querySelector('#previous');
+
+    nextBtn.addEventListener('click', () => {
+      if (this._questionIndex !== questions.length - 1) {
+        this.onNextClick();
+      }
+    });
+
+    prevBtn.addEventListener('click', () => {
+      if (this._questionIndex !== 0) {
+        this.onPrevClick();
+      }
+    });
+
+
+    const cardBody = this.querySelector('#card-body');
+    answers.forEach( (text) => {
+      const optionItem = document.createElement('option-item');
+      optionItem.questionText = text;
+      cardBody.appendChild(optionItem);
+    });
   }
 }
 

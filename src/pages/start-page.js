@@ -1,5 +1,6 @@
 /* eslint-disable require-jsdoc */
 import axios from 'axios';
+import store from '../store';
 
 class StartPage extends HTMLElement {
   constructor() {
@@ -10,7 +11,7 @@ class StartPage extends HTMLElement {
 
   set onClick(e) {
     this._onClick = e;
-    this.render();
+    // this.render();
   }
 
   get category() {
@@ -20,6 +21,7 @@ class StartPage extends HTMLElement {
   async connectedCallback() {
     const result = await axios.get('https://opentdb.com/api_category.php');
     this._categories = result.data.trivia_categories;
+    console.log(store.getState());
     this.render();
   }
 

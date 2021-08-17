@@ -9,6 +9,12 @@ const main = () => {
   const rootElement = document.querySelector('#root');
   rootElement.innerHTML = '<start-page></start-page>';
   const startPage = document.querySelector('start-page');
+  // store.subscribe(() => {
+  //   const result = store.getState().result;
+  //   if (result || result === 0) {
+  //     changeToResultPage();
+  //   };
+  // });
 
 
   const onStartButtonClick = async () => {
@@ -26,16 +32,19 @@ const main = () => {
         {category, question, answers, correctAnswer},
       ];
     });
-    console.log(store.getState());
     store.dispatch({
-      type: 'ADD_EP',
+      type: 'ADD_QUESTIONS',
       data: {
         questions: finalResult,
       },
     });
-    console.log(store.getState());
+    // console.log(store.getState());
     rootElement.innerHTML = '<question-page></question-page>';
   };
+
+  // const changeToResultPage = () => {
+  //   rootElement.innerHTML = '<result-page></result-page>';
+  // };
 
   startPage.onClick = onStartButtonClick;
 };

@@ -9,16 +9,15 @@ class QuestionPage extends HTMLElement {
     this._userAnswer = [];
 
     for (let i = 0; i < 10; i++) {
-      this._correctAnswer.push(this._questions.data.questions[i].correctAnswer);
+      this._correctAnswer.push(this._questions.questions[i].correctAnswer);
       this._userAnswer.push(null);
     }
 
-    console.log(this._correctAnswer);
-    console.log(this._userAnswer);
-
     this._questionIndex = 0;
     this._answers = [];
+    this._startCountDown = 10;
     this.render();
+    this.countDown();
   }
 
   set questionIndex(val) {
@@ -33,16 +32,56 @@ class QuestionPage extends HTMLElement {
 
   onPrevClick() {
     this._questionIndex--;
+    console.log(this._correctAnswer);
+    console.log(this._userAnswer);
     this.render();
   }
 
+  countDown() {
+    console.log('dijalankan');
+    const count = () => {
+      if (this._startCountDown === 0) {
+        clearInterval(countId);
+        this.setResult(this.getResult());
+      } else {
+        this._startCountDown--;
+        this.querySelector('#timer').innerText = `${this._startCountDown}`;
+      }
+    };
+    const countId = setInterval(count, 1000);
+  }
+
+  getResult() {
+    const userAnswer = this._userAnswer;
+    const correctAnswer = this._correctAnswer;
+    let result = 0;
+
+    for (let i = 0; i < correctAnswer.length; i++) {
+      if (userAnswer[i] === correctAnswer[i]) {
+        result += 10;
+      }
+    }
+
+    return result;
+  }
+
+  setResult(val) {
+    store.dispatch({
+      type: 'ADD_RESULT',
+      data: {
+        result: val,
+      },
+    });
+  }
+
   render() {
-    const questions = this._questions.data.questions;
+    const questions = this._questions.questions;
     const index = this._questionIndex;
     const answers = questions[index].answers;
     const userAnswer = this._userAnswer;
+    // const startCount = this._startCountDown;
     this.innerHTML = `
-      <h1 id="timer" class="text-center text-white">30</h1>
+      <h1 id="timer" class="text-center text-white">${this._startCountDown}</h1>
       <div class="question d-flex align-items-center">
         <button
           id="previous"
@@ -66,8 +105,10 @@ class QuestionPage extends HTMLElement {
           </div>
         </div>
       </div>
+      <button id="finish" type="button" class="btn btn-success">Finish</button>
     `;
     const cardBody = this.querySelector('#card-body');
+    const buttonFinish = this.querySelector('#finish');
 
     for (let i = 0; i < answers.length; i++) {
       const optionItem = document.createElement('option-item');
@@ -76,7 +117,6 @@ class QuestionPage extends HTMLElement {
       if (answers[i] === userAnswer[index]) {
         optionItem.querySelector('input').checked = true;
       }
-      console.log(answers[i], userAnswer[i]);
       cardBody.appendChild(optionItem);
     }
 
@@ -100,6 +140,12 @@ class QuestionPage extends HTMLElement {
       btn.addEventListener('click', () => {
         this._userAnswer[index] = btn.getAnswerText;
       });
+    });
+
+    buttonFinish.addEventListener('click', () => {
+      console.log(this.getResult());
+      this.setResult(this.getResult());
+      document.querySelector('#root').innerHTML = '<result-page></result-page>';
     });
   }
 }

@@ -1,14 +1,20 @@
 const {createStore} = require('redux');
 
 // state awal
-const initialState = {data: ''};
+const initialState = {};
 
 // reducer
 const reducer = (prevState=initialState, action) => {
   const data = action.data;
   switch (action.type) {
-    case 'ADD_EP':
-      return {...prevState, data};
+    case 'ADD_QUESTIONS':
+      const questions = data.questions;
+      return {...prevState, questions};
+      break;
+
+    case 'ADD_RESULT':
+      const result = data.result;
+      return {...prevState, result};
       break;
 
     default:

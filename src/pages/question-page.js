@@ -36,7 +36,6 @@ class QuestionPage extends HTMLElement {
   }
 
   countDown() {
-    console.log('dijalankan');
     const count = () => {
       if (this._startCountDown === 0) {
         clearInterval(countId);
@@ -151,12 +150,7 @@ class QuestionPage extends HTMLElement {
     });
 
     buttonFinish.addEventListener('click', () => {
-      console.log(this.getResult());
-      this.setResult(this.getResult());
-      const resultPage = document.createElement('result-page');
-      resultPage.setAttribute('class', 'd-flex justify-content-center');
-      document.querySelector('#root').appendChild(resultPage);
-      this.remove();
+      this._startCountDown = 0;
     });
   }
 }

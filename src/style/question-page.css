@@ -1,0 +1,17 @@
+#timer {
+  font-size: 3rem;
+}
+
+question-page > button {
+  width: 60%;
+}
+
+@media (min-width: 768px) {
+  question-page .card {
+    width: 30rem;
+  }
+
+  #timer {
+    font-size: 4rem;
+  }
+}

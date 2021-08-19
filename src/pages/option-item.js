@@ -31,7 +31,7 @@ class OptionItem extends HTMLElement {
           autocomplete="off"
         />
         <label
-          class="btn btn-outline-secondary w-100"
+          class="btn btn-outline-secondary w-100 open-sans"
           for="${index}"
           >${answerText}</label
         >

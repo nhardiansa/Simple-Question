@@ -15,7 +15,7 @@ class QuestionPage extends HTMLElement {
 
     this._questionIndex = 0;
     this._answers = [];
-    this._startCountDown = 10;
+    this._startCountDown = 60;
     this.render();
     this.countDown();
   }
@@ -32,8 +32,6 @@ class QuestionPage extends HTMLElement {
 
   onPrevClick() {
     this._questionIndex--;
-    console.log(this._correctAnswer);
-    console.log(this._userAnswer);
     this.render();
   }
 
@@ -43,6 +41,10 @@ class QuestionPage extends HTMLElement {
       if (this._startCountDown === 0) {
         clearInterval(countId);
         this.setResult(this.getResult());
+        const resultPage = document.createElement('result-page');
+        resultPage.setAttribute('class', 'd-flex justify-content-center');
+        document.querySelector('#root').appendChild(resultPage);
+        this.remove();
       } else {
         this._startCountDown--;
         this.querySelector('#timer').innerText = `${this._startCountDown}`;
@@ -79,39 +81,45 @@ class QuestionPage extends HTMLElement {
     const index = this._questionIndex;
     const answers = questions[index].answers;
     const userAnswer = this._userAnswer;
-    // const startCount = this._startCountDown;
+
     this.innerHTML = `
-      <h1 id="timer" class="text-center text-white">${this._startCountDown}</h1>
-      <div class="question d-flex align-items-center">
+      <h1 id="timer" class="text-white passion">${this._startCountDown}</h1>
+      <div class="card px-2 d-flex flex-row align-items-center">
         <button
           id="previous"
           type="button"
-          class="btn btn-secondary rounded-pill order-1"
+          class="btn btn-secondary rounded-circle py-2 order-1"
         >
-          <i class="bi bi-chevron-left"></i>
+          <i class="bi bi-chevron-left fs-6"></i>
         </button>
         <button
           id="next"
           type="button"
-          class="btn btn-secondary rounded-pill order-3"
+          class="btn btn-secondary rounded-circle py-2 order-3"
         >
           <i class="bi bi-chevron-right"></i>
         </button>
-        <div class="card px-3 order-2" style="width: 18rem">
-          <div id="card-body" class="card-body d-flex flex-column">
-            <p class="card-text">
-              ${questions[index].question}
-            </p>
-          </div>
+        <div
+          id="card-body"
+          class="card-body d-flex flex-column order-2 mx-2 mx-md-4"
+        >
+          <p class="card-text open-sans">${questions[index].question}</p>
         </div>
       </div>
-      <button id="finish" type="button" class="btn btn-success">Finish</button>
+      <button
+        id="finish"
+        type="button"
+        class="btn btn-success mt-3 rounded-pill px-4 py-2 open-sans fw-bold"
+      >
+        Finish
+      </button>
     `;
     const cardBody = this.querySelector('#card-body');
     const buttonFinish = this.querySelector('#finish');
 
     for (let i = 0; i < answers.length; i++) {
       const optionItem = document.createElement('option-item');
+      optionItem.setAttribute('class', 'mb-2');
       optionItem.answerText = answers[i];
       optionItem.answerIndex = i;
       if (answers[i] === userAnswer[index]) {
@@ -145,7 +153,10 @@ class QuestionPage extends HTMLElement {
     buttonFinish.addEventListener('click', () => {
       console.log(this.getResult());
       this.setResult(this.getResult());
-      document.querySelector('#root').innerHTML = '<result-page></result-page>';
+      const resultPage = document.createElement('result-page');
+      resultPage.setAttribute('class', 'd-flex justify-content-center');
+      document.querySelector('#root').appendChild(resultPage);
+      this.remove();
     });
   }
 }

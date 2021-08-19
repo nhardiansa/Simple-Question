@@ -36,16 +36,16 @@ class ResultPage extends HTMLElement {
       text = 'Maybe you want to retry';
     }
     this.innerHTML = `
-      <div class="card" style="width: 18rem">
-        <div class="card-body">
-          <h5 class="card-title text-center">Your result</h5>
-          <h1 class="text-center">${result}</h1>
-          <p class="card-text text-center">${text}</p>
-          <button 
-            id="retry" 
-            type="button" 
-            class="btn btn-success"
-            >
+      <div id="retry-card" class="card">
+        <div class="card-body d-flex flex-column align-items-center">
+          <h5 class="card-title text-center open-sans">Your result</h5>
+          <h1 class="text-center my-2 my-md-3 passion">${result}</h1>
+          <p class="card-text text-center mb-4 open-sans">${text}</p>
+          <button
+            id="retry"
+            type="button"
+            class="btn btn-success rounded-pill py-2 py-md-3 open-sans fw-bold"
+          >
             Retry
           </button>
         </div>

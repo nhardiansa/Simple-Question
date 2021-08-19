@@ -7,6 +7,11 @@ const initialState = {};
 const reducer = (prevState=initialState, action) => {
   const data = action.data;
   switch (action.type) {
+    case 'ADD_CATEGORIES':
+      const categories = data.categories;
+      return {...prevState, categories};
+      break;
+
     case 'ADD_QUESTIONS':
       const questions = data.questions;
       return {...prevState, questions};

@@ -1,0 +1,21 @@
+#retry-card {
+  width: 100%;
+}
+
+#retry-card h1 {
+  font-size: 3.5rem;
+}
+
+#retry {
+  width: 80%;
+}
+
+@media (min-width: 768px) {
+  #retry-card {
+    width: 21rem;
+  }
+
+  #retry-card h1 {
+    font-size: 4.5rem;
+  }
+}
